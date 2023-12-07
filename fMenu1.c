@@ -13,7 +13,10 @@ void clean(char *str, int tam) { // Entran valores tipo string de Persona y sale
 int login(persona *p) {// se ingresan username y password y se validan con los mismos de persona y se retorna si ingreso o no
     char username[15] = {0};
     char password[15] = {0};
-	char usuarioPass[100];
+    char *usuarioPass;
+	persona *aux=NULL;
+    int n=0;
+    int i=0;
 	
 	      printf("\n\n\t\tLogin\n");
 	      
@@ -37,8 +40,9 @@ int login(persona *p) {// se ingresan username y password y se validan con los m
 	               char passwordTXT[15];
 	                char nameTXT[15];
 	                char lastTXT[15];
+                    int ageTXT;
 	               
-	                 sscanf(usuarioPass, "%s %s %s %s", usernameTXT, passwordTXT,nameTXT,lastTXT);
+	                 sscanf(usuarioPass, "%s %s %d %s %s", nameTXT, lastTXT ,ageTXT,usernameTXT,passwordTXT);
 	 
 	 
 	 
@@ -66,19 +70,29 @@ int login(persona *p) {// se ingresan username y password y se validan con los m
 
 
 int registrarUsuario(persona *p) {// se ingresan todos los dtos necesarios y se guardan en el struct persona
-	clean(p->password, 15);
-    clean(p->username, 15);
+	int n=0;
+    int i=0;
+   
     
+
+    FILE *archivo = fopen("usuarios.txt", "a");
+    if(archivo==NULL){
+         	   printf("\nEl archivo no se abrio correctamente \n");
+    }
+    printf("\nEl archivo se abrio correctamente! \n");
     
     printf("\n\n\t\tRegistrar Cuenta\n\n");
 
     printf("Ingrese su Nombre: \n");
     scanf("%s", p->name);
+   
 
     while (nameValid(p->name) == 1) {
         printf("\n\nIntente de nuevo: \n");
         scanf("%s", p->name);
     }
+    //pasar a archivo "usuarios.txt" en memoria dinamica
+    fprintf(archivo,"%s ",p->name);
 
     printf("\n\n");
 
@@ -89,6 +103,8 @@ int registrarUsuario(persona *p) {// se ingresan todos los dtos necesarios y se 
         printf("\n\nIntente de nuevo: \n");
         scanf("%s", p->apellido);
     }
+    //pasar a archivo "usuarios.txt" en memoria dinamica
+    fprintf(archivo,"%s ",p->apellido);
 
     printf("\n\n");
 
@@ -99,11 +115,15 @@ int registrarUsuario(persona *p) {// se ingresan todos los dtos necesarios y se 
         printf("\n\nIntente de nuevo: \n");
         scanf("%d", &(p->edad));
     }
+    //pasar a archivo "usuarios.txt" en memoria dinamica
+    fprintf(archivo,"%d ",p->edad);
 
     printf("\n\n");
 
     printf("Ingrese su Username: \n");
     scanf("%s", p->username);
+//pasar a archivo "usuarios.txt" en memoria dinamica
+    fprintf(archivo,"%s ",p->username);
 
     printf("\n\n");
 
@@ -112,13 +132,14 @@ int registrarUsuario(persona *p) {// se ingresan todos los dtos necesarios y se 
 
     while (passwordValid(p->password) == 1) {
         printf("\n\nIntente de nuevo: \n");
-scanf("%s", p->password);
+    scanf("%s", p->password);
     }
-    
-    FILE *archivo = fopen("usuarios.txt", "a");   //append, "agregar"
-    fprintf(archivo, "%s %s %s %s\n", p->username,p->password,p->name,p->apellido);
+    //pasar a archivo "usuarios.txt" en memoria dinamica
+    fprintf(archivo,"%s\n",p->password);
+
+   
+    //close file
     fclose(archivo);
-    printf("Usuario creado con Exito! \n\n");
 
     printf("\n\n");
 

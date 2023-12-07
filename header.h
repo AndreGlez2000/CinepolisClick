@@ -7,6 +7,10 @@ typedef struct{
 
 } persona;
 
+typedef struct{
+    persona *usuarios;
+    int numUsuarios;
+}arregloUsuarios;
 
 
 void clean(char *str, int tam);
